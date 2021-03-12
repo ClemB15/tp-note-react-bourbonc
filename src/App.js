@@ -1,25 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useReducer } from 'react';
 import './App.css';
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+import MarkerContext from "./contexts/MarkerContext";
+import markerReducer from "./reducers/markerReducer";
+import Map from "./components/Map";
+import MarkersList from "./components/MarkersList";
+import Users from "./components/Users";
 
-function App() {
+const Home = () => {
+    return <h1>Bienvenue sur la map</h1>
+}
+const App = () => {
+    const [state, dispatch] = useReducer(markerReducer, {markers: []})
+    const context = { state, dispatch }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <MarkerContext.Provider value={context}>
+      <Router>
+          <div>
+              <nav>
+                  <Link to="/">Accueil | </Link>
+
+                  <Link to="/map">Map | </Link>
+
+                  <Link to="/markers">MarkersList</Link>
+
+                  <Link to="/users">Users</Link>
+              </nav>
+              <Switch>
+                  <Route path="/map">
+                      <Map />
+                  </Route>
+                  <Route path="/markers">
+                      <MarkersList />
+                  </Route>
+                  <Route path="/">
+                      <Home />
+                  </Route>
+                  <Route path="/users">
+                      <Users />
+                  </Route>
+              </Switch>
+          </div>
+      </Router>
+      </MarkerContext.Provider>
   );
 }
 
