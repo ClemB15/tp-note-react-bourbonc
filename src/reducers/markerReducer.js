@@ -7,6 +7,13 @@ const markerReducer = (state, action) => {
             const markers = [...state.markers]
             markers.splice(action.id,1)
             return {...state, markers: [...(markers || [])]}
+        case 'userInfo':
+            const user = {...state.user} || {}
+
+            user.name = action.user.name
+            user.mail = action.user.mail
+
+            return {...state, user}
         default:
             return { ...state }
     }
